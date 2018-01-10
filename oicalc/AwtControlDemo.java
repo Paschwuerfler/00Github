@@ -1,5 +1,4 @@
  
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -60,7 +59,7 @@ public class AwtControlDemo {
       public void paint (Graphics g) {
          Graphics2D g2;
          g2 = (Graphics2D) g;
-         g2.drawString ("It is a custom canvas area", 70, 70);
+
       }
    }
 }
