@@ -97,7 +97,7 @@ public class Berechnung extends Application {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                calc(1);
+                calc(1, size);
             }
         };
 
@@ -126,16 +126,16 @@ public class Berechnung extends Application {
         //  gc.setStroke(old);
     }
 
-    private void calc(int num) {
+    private void calc(int num, double size) {
         System.out.println("calc(" + num + ")");
 
         for (int i = 0; i < num; ++i) {
-            double x = random.nextDouble() * MAX;
-            double y = random.nextDouble() * MAX;
+            double x = random.nextDouble() * size;
+            double y = random.nextDouble() * size;
             double pi = inside / (outside + inside) * 4;
             String msg = " Inside: " + inside + " Total: " + (inside + outside) + " => Pi: " + pi;
 
-            if (x * x + y * y > MAX * MAX) {
+            if (x * x + y * y > size * size) {
                 // pointAt(x, y, Color.GREEN);
                 render(msg, x, y, Color.GREEN);
                 ++outside;
