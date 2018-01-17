@@ -10,25 +10,37 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
-import javafx.concurrent.Task;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.ArcType;
+import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Berechnung extends Application {
-    
+
     double inside;
     double outside;
 
-    private static final int MAX = 900;
+    private static final int MAX = 1200;
+    private static final int MARGIN = 50;
+
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
 
     private Random random = new Random();
+
+    private Label label = new Label("Label");
 
     private GraphicsContext gc;
 
@@ -43,13 +55,30 @@ public class Berechnung extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-        
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        double size = Math.min(MAX,
+                Math.min(primaryScreenBounds.getHeight(), primaryScreenBounds.getWidth()))
+                - MARGIN;
         
         primaryStage.setTitle("Drawing Operations Test");
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    scheduler.shutdown();
+                    stop();
+                } catch (Exception ex) {
+                    System.err.println("stop failed: " + ex);
+                    ex.printStackTrace();
+                }
+            }
+        });
+
         Group root = new Group();
-        Canvas canvas = new Canvas(MAX, MAX);
+        Canvas canvas = new Canvas(size, size);
         gc = canvas.getGraphicsContext2D();
+        label.setTextFill(Color.web("#0076a3"));
+        label.setFont(new Font("Arial", 30));
 
         BoxBlur blur = new BoxBlur();
         blur.setWidth(1);
@@ -57,55 +86,31 @@ public class Berechnung extends Application {
         blur.setIterations(1);
         gc.setEffect(blur);
 
-        drawShapes(gc);
+        drawShapes(gc, size);
 
-        root.getChildren().add(canvas);
+        ObservableList<Node> top = root.getChildren();
+        top.add(canvas);
+        top.add(label);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        /*
-        Task<Void> task = new Task<Void>() {
-            @Override
-            public Void call() throws Exception {
-                calc(400);
-                return null;
-            }
-        };
-
-        task.setOnSucceeded(event -> {
-            // calc(400);
-            // new Thread(task).run();
-        });
-         */
         Runnable task = new Runnable() {
             @Override
             public void run() {
                 calc(1);
             }
         };
-        
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+
         scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.MILLISECONDS);
     }
 
-    private void drawShapes(GraphicsContext gc) {
-
-        
+    private void drawShapes(GraphicsContext gc, double size) {
         gc.setFill(Color.GREEN);
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(1.5);
-        /*
-        gc.strokeLine(40, 10, 10, 40);
-        gc.fillOval(10, 60, 30, 30);
-         */
-        // gc.strokeOval(0, 0, 400, 400);
-
         gc.moveTo(0, 0);
-        gc.arc(0, 0, MAX, MAX, 0.0d, -90.0d);
+        gc.arc(0, 0, size, size, 0.0d, -90.0d);
         gc.stroke();
-
-
-
     }
 
     private void pointAt(double x, double y, Paint c) {
@@ -127,15 +132,29 @@ public class Berechnung extends Application {
         for (int i = 0; i < num; ++i) {
             double x = random.nextDouble() * MAX;
             double y = random.nextDouble() * MAX;
+            double pi = inside / (outside + inside) * 4;
+            String msg = " Inside: " + inside + " Total: " + (inside + outside) + " => Pi: " + pi;
+
             if (x * x + y * y > MAX * MAX) {
-                pointAt(x, y, Color.GREEN);
+                // pointAt(x, y, Color.GREEN);
+                render(msg, x, y, Color.GREEN);
                 ++outside;
             } else {
-                pointAt(x, y, Color.RED);
+                // pointAt(x, y, Color.RED);
+                render(msg, x, y, Color.RED);
                 ++inside;
             }
         }
-        double pi = inside / (outside + inside) * 4;
-        System.out.println(" Inside: " + inside + " Total: " + (inside + outside) + " => Pi: " + pi);
+    }
+
+    private void render(String msg, double x, double y, Paint c) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                pointAt(x, y, c);
+                label.setText(msg);
+                System.out.println(msg);
+            }
+        });
     }
 }
