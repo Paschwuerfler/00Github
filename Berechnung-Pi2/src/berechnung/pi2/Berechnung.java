@@ -13,12 +13,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
@@ -77,8 +79,10 @@ public class Berechnung extends Application {
         Group root = new Group();
         Canvas canvas = new Canvas(size, size);
         gc = canvas.getGraphicsContext2D();
-        label.setTextFill(Color.web("#0076a3"));
+        label.setTextFill(Color.web("#001575"));
         label.setFont(new Font("Arial", 30));
+        label.setContentDisplay(ContentDisplay.RIGHT);
+
 
         BoxBlur blur = new BoxBlur();
         blur.setWidth(1);
@@ -133,7 +137,9 @@ public class Berechnung extends Application {
             double x = random.nextDouble() * size;
             double y = random.nextDouble() * size;
             double pi = inside / (outside + inside) * 4;
-            String msg = " Inside: " + inside + " Total: " + (inside + outside) + " => Pi: " + pi;
+            String msg = " Inside: " + inside + ""
+                    + " Total: " + (inside + outside) + ""
+                    + " => Pi: " + pi;
 
             if (x * x + y * y > size * size) {
                 // pointAt(x, y, Color.GREEN);
