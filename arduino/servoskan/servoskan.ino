@@ -15,7 +15,7 @@ int Step = 5;
 int xs, ys = 0; //start
 int xe, ye = 100; //end
 int dist;
-int onpin = 3;
+int onpin = 3; //turns servos on and off
 
 
 
