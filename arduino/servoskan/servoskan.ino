@@ -15,6 +15,7 @@ int Step = 5;
 int xs, ys = 0; //start
 int xe, ye = 100; //end
 int dist;
+int onpin = 3;
 
 
 
@@ -27,6 +28,8 @@ void setup() {
   Serial.begin(9600); // Open serial monitor at 115200 baud to see ping results.
   sx.write(0);
   sy.write(0);
+  pinMode(onpin, OUTPUT);
+
 
 }
 
@@ -46,11 +49,11 @@ void loop() {
           i = 6;
         }
       }
-      delay(100);
+      digitalWrite(onpin, 0);
       Serial.println(":x=" + posx);
       Serial.println(":y=" + posy);
       Serial.println(":d=" + dist);
-      delay(100);
+      digitalWrite(onpin, 1);
     }
 
 
