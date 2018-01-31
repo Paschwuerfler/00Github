@@ -79,7 +79,7 @@ public class Berechnung extends Application {
         Group root = new Group();
         Canvas canvas = new Canvas(size, size);
         gc = canvas.getGraphicsContext2D();
-        label.setTextFill(Color.web("#001575"));
+        label.setTextFill(Color.web("#000000"));
         label.setFont(new Font("Arial", 30));
         label.setContentDisplay(ContentDisplay.RIGHT);
 
