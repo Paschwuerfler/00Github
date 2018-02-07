@@ -23,12 +23,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.scene.layout.HBox;
 
 public class Berechnung extends Application {
 
@@ -43,8 +45,14 @@ public class Berechnung extends Application {
     private Random random = new Random();
 
     private Label label = new Label("Label");
+    private Label label1 = new Label("Label");
+    private Label label2 = new Label("Label");
+    private Label label3 = new Label("Label");
+    private Label label4 = new Label("Label");
 
     private GraphicsContext gc;
+    
+
 
     public static void main(String[] args) {
         launch(args);
@@ -76,13 +84,20 @@ public class Berechnung extends Application {
             }
         });
 
-        Group root = new Group();
+       // Group root = new Group();
         Canvas canvas = new Canvas(size, size);
         gc = canvas.getGraphicsContext2D();
         label.setTextFill(Color.web("#000000"));
         label.setFont(new Font("Arial", 30));
-        label.setContentDisplay(ContentDisplay.RIGHT);
-
+        //label.setContentDisplay(ContentDisplay.RIGHT);
+        
+        
+        //BorderPane.setCenter(canvas);
+        //BorderPane.setRight(label);
+        //BorderPane.setAlignment(canvas, Pos.CENTER);
+        //BorderPane.setAlignment(label, Pos.BASELINE_RIGHT);
+        
+        
 
         BoxBlur blur = new BoxBlur();
         blur.setWidth(1);
@@ -91,12 +106,45 @@ public class Berechnung extends Application {
         gc.setEffect(blur);
 
         drawShapes(gc, size);
+        
+        
+                BorderPane.setAlignment(canvas,Pos.TOP_CENTER);
+		// Set the alignment of the Bottom Text to Center
+		BorderPane.setAlignment(label1,Pos.BOTTOM_CENTER);
+		// Set the alignment of the Left Text to Center
+		BorderPane.setAlignment(label2,Pos.CENTER_LEFT);
+		// Set the alignment of the Right Text to Center
+		BorderPane.setAlignment(label,Pos.CENTER_RIGHT);
+                
+                BorderPane root = new BorderPane();
+                root.setCenter(label);
+		// Set the Size of the VBox
+		root.setPrefSize(400, 400);		
+		// Set the Style-properties of the BorderPane
+		root.setStyle("-fx-padding: 10;" +
+				"-fx-border-style: solid inside;" +
+				"-fx-border-width: 2;" +
+				"-fx-border-insets: 5;" +
+				"-fx-border-radius: 5;" +
+				"-fx-border-color: blue;");
+		
+		// Create the Scene
+		Scene scene = new Scene(root);
+		// Add the scene to the Stage
+		primaryStage.setScene(scene);
+		// Set the title of the Stage
+		primaryStage.setTitle("A simple BorderPane Example");
+		// Display the Stage
+		primaryStage.show();	
 
-        ObservableList<Node> top = root.getChildren();
-        top.add(canvas);
-        top.add(label);
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+       ObservableList<Node> top = root.getChildren();
+       top.add(canvas);
+       top.add(label);
+       primaryStage.setScene(new Scene(root));
+       primaryStage.show();
+        
+
+
 
         Runnable task = new Runnable() {
             @Override
