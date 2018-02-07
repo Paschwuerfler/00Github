@@ -137,9 +137,10 @@ public class Berechnung extends Application {
             double x = random.nextDouble() * size;
             double y = random.nextDouble() * size;
             double pi = inside / (outside + inside) * 4;
-            String msg = "Inside: " + inside + ""
-                    + " Total: " + (inside + outside) + ""
-                    + " => Pi: " + pi;
+           String msg = "\n \n \n \n                                                                                                                     Inside: " + inside
+                    + "\n                                                                                                                      Total:  " + (inside + outside)
+                    + "\n                                                                                                                      => Pi: " + pi;
+
 
             if (x * x + y * y > size * size) {
                 // pointAt(x, y, Color.GREEN);
