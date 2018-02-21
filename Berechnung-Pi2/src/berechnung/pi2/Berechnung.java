@@ -31,12 +31,12 @@ import javafx.stage.WindowEvent;
 
 public class Berechnung extends Application {
 
-    GuiProject gui = new GuiProject(1,100);
+    GuiProject gui = new GuiProject(1, 100);
 
     double inside;
     double outside;
-    
-    int delay, stepsize,step;
+
+    int delay, stepsize, step;
 
     private static final int MAX = 1200;
     private static final int MARGIN = 50;
@@ -107,22 +107,21 @@ public class Berechnung extends Application {
             @Override
             public void run() {
                 calc(stepsize, size);
-                step ++;
+                step++;
 
-                    delay = gui.textd();
-                    stepsize = gui.texts();
-                    if(step > 1000/delay) {
+                delay = gui.textd();
+                stepsize = gui.texts();
 
-                        scheduler.scheduleAtFixedRate(task, delay, delay, TimeUnit.MILLISECONDS);
-                        
-                    }
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
 
-
-            
             }
         };
 
-        scheduler.scheduleAtFixedRate(task, 1, 1, TimeUnit.MILLISECONDS);
+        scheduler.scheduleWithFixedDelay(task, 1, 1, TimeUnit.MILLISECONDS);
     }
 
     private void drawShapes(GraphicsContext gc, double size) {
@@ -173,18 +172,28 @@ public class Berechnung extends Application {
         }
     }
 
-    private void render(String msg, double x, double y, Paint c) {
+    /*private void render(String msg, double x, double y, Paint c) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 pointAt(x, y, c);
                 label.setText(msg);
                 System.out.println(msg);
-                
-                
-                
-                        
+
             }
         });
-    }
+    } */
+    
+        private void render(String msg, double x, double y, Paint c) {
+
+
+
+                pointAt(x, y, c);
+                label.setText(msg);
+                System.out.println(msg);
+
+
+
+    } 
+    
 }
