@@ -31,10 +31,12 @@ import javafx.stage.WindowEvent;
 
 public class Berechnung extends Application {
 
-    Object gui = new GuiProject();
+    GuiProject gui = new GuiProject(1,100);
 
     double inside;
     double outside;
+    
+    int delay, stepsize,step;
 
     private static final int MAX = 1200;
     private static final int MARGIN = 50;
@@ -54,6 +56,9 @@ public class Berechnung extends Application {
     public Berechnung() {
         inside = 0;
         outside = 0;
+        delay = 1000;
+        stepsize = 1;
+        step = 0;
     }
 
     @Override
@@ -101,11 +106,23 @@ public class Berechnung extends Application {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                calc(1, size);
+                calc(stepsize, size);
+                step ++;
+
+                    delay = gui.textd();
+                    stepsize = gui.texts();
+                    if(step > 1000/delay) {
+
+                        scheduler.scheduleAtFixedRate(task, delay, delay, TimeUnit.MILLISECONDS);
+                        
+                    }
+
+
+            
             }
         };
 
-        scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(task, 1, 1, TimeUnit.MILLISECONDS);
     }
 
     private void drawShapes(GraphicsContext gc, double size) {
@@ -149,6 +166,9 @@ public class Berechnung extends Application {
                 // pointAt(x, y, Color.RED);
                 render(msg, x, y, Color.RED);
                 ++inside;
+                gui.setin(inside);
+                gui.setout(outside);
+                gui.setpi(pi);
             }
         }
     }
@@ -160,6 +180,10 @@ public class Berechnung extends Application {
                 pointAt(x, y, c);
                 label.setText(msg);
                 System.out.println(msg);
+                
+                
+                
+                        
             }
         });
     }
