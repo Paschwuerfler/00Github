@@ -203,7 +203,12 @@ public class GuiProject extends JFrame {
 
     //Method mouseClicked for bpause
     private void Pauseclick(MouseEvent evt) {
-        pause = 1;
+       if(pause == 0) {
+           pause = 1;
+       }
+       else {
+           pause = 0;
+       }
     }
 
     //Method mouseClicked for buttonclear
@@ -234,11 +239,14 @@ public class GuiProject extends JFrame {
 
     int texts() {
         int f = Integer.parseInt(textstepsize.getText());
-        if (f < 1) {
-            return 1;
-        } else {
+        if (pause == 1) {
+            return 0;
+        } else if (f > 1) {
             return f;
         }
+        else {
+                return 1;
+                }
     }
 
     //method for generate menu

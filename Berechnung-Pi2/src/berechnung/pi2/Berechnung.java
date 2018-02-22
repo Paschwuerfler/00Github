@@ -111,13 +111,6 @@ public class Berechnung extends Application {
 
                 delay = gui.textd();
                 stepsize = gui.texts();
-
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-
             }
         };
 
@@ -172,7 +165,7 @@ public class Berechnung extends Application {
         }
     }
 
-    /*private void render(String msg, double x, double y, Paint c) {
+    private void render(String msg, double x, double y, Paint c) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -182,18 +175,8 @@ public class Berechnung extends Application {
 
             }
         });
-    } */
-    
-        private void render(String msg, double x, double y, Paint c) {
-
-
-
-                pointAt(x, y, c);
-                label.setText(msg);
-                System.out.println(msg);
-
-
-
     } 
+    
+
     
 }
