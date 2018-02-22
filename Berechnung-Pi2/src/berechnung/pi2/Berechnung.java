@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -31,8 +32,11 @@ import javafx.stage.WindowEvent;
 
 public class Berechnung extends Application {
 
+<<<<<<< HEAD
     GuiProject gui = new GuiProject(1, 100);
 
+=======
+>>>>>>> parent of 536aba4... Added Gui in extra Window bc Fuck Layout
     double inside;
     double outside;
 
@@ -67,7 +71,7 @@ public class Berechnung extends Application {
         double size = Math.min(MAX,
                 Math.min(primaryScreenBounds.getHeight(), primaryScreenBounds.getWidth()))
                 - MARGIN;
-
+        
         primaryStage.setTitle("Drawing Operations Test");
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -88,6 +92,7 @@ public class Berechnung extends Application {
         label.setTextFill(Color.web("#000000"));
         label.setFont(new Font("Arial", 30));
         label.setContentDisplay(ContentDisplay.RIGHT);
+
 
         BoxBlur blur = new BoxBlur();
         blur.setWidth(1);
@@ -146,9 +151,10 @@ public class Berechnung extends Application {
             double x = random.nextDouble() * size;
             double y = random.nextDouble() * size;
             double pi = inside / (outside + inside) * 4;
-            String msg = "\n \n \n \n                                                                                                                     Inside: " + inside
+           String msg = "\n \n \n \n                                                                                                                     Inside: " + inside
                     + "\n                                                                                                                      Total:  " + (inside + outside)
                     + "\n                                                                                                                      => Pi: " + pi;
+
 
             if (x * x + y * y > size * size) {
                 // pointAt(x, y, Color.GREEN);
