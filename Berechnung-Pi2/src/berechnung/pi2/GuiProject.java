@@ -1,7 +1,7 @@
 package berechnung.pi2;
 
 /**
- *Text genereted by Simple GUI Extension for BlueJ
+ * Text genereted by Simple GUI Extension for BlueJ
  */
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 public class GuiProject extends JFrame {
+
+    int restart, pause, steps, delay;
 
     private JMenuBar menuBar;
     private JButton bpause;
@@ -26,7 +28,12 @@ public class GuiProject extends JFrame {
     private JTextField textstepsize;
 
     //Constructor 
-    public GuiProject() {
+    public GuiProject(int s, int d) {
+
+        steps = s;
+        delay = d;
+        pause = 0;
+        restart = 0;
 
         this.setTitle("GUI_project");
         this.setSize(500, 250);
@@ -158,7 +165,7 @@ public class GuiProject extends JFrame {
         textdelay.setForeground(new Color(0, 0, 0));
         textdelay.setEnabled(true);
         textdelay.setFont(new Font("sansserif", 0, 12));
-        textdelay.setText("JTextField");
+        textdelay.setText("" + delay);
         textdelay.setVisible(true);
 
         textstepsize = new JTextField();
@@ -167,7 +174,7 @@ public class GuiProject extends JFrame {
         textstepsize.setForeground(new Color(0, 0, 0));
         textstepsize.setEnabled(true);
         textstepsize.setFont(new Font("sansserif", 0, 12));
-        textstepsize.setText("JTextField");
+        textstepsize.setText("" + steps);
         textstepsize.setVisible(true);
 
         //adding components to contentPane panel
@@ -195,12 +202,51 @@ public class GuiProject extends JFrame {
 
     //Method mouseClicked for bpause
     private void Pauseclick(MouseEvent evt) {
-        //TODO
+        if (pause == 1) {
+            pause = 0;
+            bpause.setBackground(new Color(100,255 ,100 ));
+        } else {
+            pause = 1;
+            bpause.setBackground(new Color(255,100,100 ));
+        }
     }
 
     //Method mouseClicked for buttonclear
     private void Clearclick(MouseEvent evt) {
-        //TODO
+        restart = 1;
+    }
+
+    int gets() {
+        int f = Integer.parseInt(textstepsize.getText());
+        if (f > 1) {
+            return f;
+        } else if (pause == 1) {
+            return 0;
+
+        } else {
+            return 1;
+        }
+    }
+
+    int getd() {
+        int f = Integer.parseInt(textdelay.getText());
+        if (f > 1) {
+            return f;
+        } else {
+            return 1;
+        }
+    }
+
+    void seti(double i) {
+        lins.setText("" + i);
+    }
+
+    void seto(double i) {
+        lout.setText("" + i);
+    }
+
+    void setpi(double i) {
+        lpi.setText("" + i);
     }
 
     //method for generate menu
@@ -212,7 +258,7 @@ public class GuiProject extends JFrame {
         System.setProperty("swing.defaultlaf", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new GuiProject();
+                new GuiProject(100, 100);
             }
         });
     }

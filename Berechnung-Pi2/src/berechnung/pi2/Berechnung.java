@@ -5,6 +5,7 @@
  */
 package berechnung.pi2;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,10 +32,12 @@ import javafx.stage.WindowEvent;
 
 public class Berechnung extends Application {
 
-    Object gui = new GuiProject();
+    GuiProject gui = new GuiProject(1, 100);
 
+    int stepsize, step, killme;
     double inside;
     double outside;
+    double pi;
 
     private static final int MAX = 1200;
     private static final int MARGIN = 50;
@@ -54,6 +57,11 @@ public class Berechnung extends Application {
     public Berechnung() {
         inside = 0;
         outside = 0;
+        pi = 0;
+
+        stepsize = 1;
+        step = 0;
+
     }
 
     @Override
@@ -101,7 +109,38 @@ public class Berechnung extends Application {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                calc(1, size);
+                calc(stepsize, size);
+                step++;
+                gui.setpi(pi);
+                gui.seti(inside);
+                gui.seto(outside);
+
+                if (step == 100) {
+                    step = 0;
+                    stepsize = gui.gets();
+                    if (gui.restart == 1) {
+                        gui.dispose();
+                        killme = 1;
+                        scheduler.shutdownNow();
+                        primaryStage.close();
+                        try {
+                        Process proc = Runtime.getRuntime().exec("java -jar Berechnung.jar");
+                        }
+                        catch(IOException e) {
+                            
+                        }
+                        
+                        
+                        try {
+                            scheduler.shutdown();
+                            stop();
+                        } catch (Exception ex) {
+                            System.err.println("stop failed: " + ex);
+                            ex.printStackTrace();
+                        }
+                    }
+
+                }
             }
         };
 
@@ -136,7 +175,7 @@ public class Berechnung extends Application {
         for (int i = 0; i < num; ++i) {
             double x = random.nextDouble() * size;
             double y = random.nextDouble() * size;
-            double pi = inside / (outside + inside) * 4;
+            pi = inside / (outside + inside) * 4;
             String msg = "\n \n \n \n                                                                                                                     Inside: " + inside
                     + "\n                                                                                                                      Total:  " + (inside + outside)
                     + "\n                                                                                                                      => Pi: " + pi;
